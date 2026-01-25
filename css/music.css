@@ -14,6 +14,9 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  overflow: hidden; 
+  touch-action: none;
+  min-height: 100svh;
 }
 
 .console {
@@ -512,4 +515,5 @@ body {
   .track-artist {
     font-size: 6px;
   }
+
 }
