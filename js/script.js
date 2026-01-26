@@ -39,13 +39,12 @@ const screens = {
 };
 
 // Wait for DOM to load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   console.log('✅ DOM loaded');
 
-  // Get DOM elements
   const screen = document.querySelector('.screen');
-  const screenTitle = screen ? screen.querySelector('h1') : null;
-  const screenSubtitle = screen ? screen.querySelector('p') : null;
+  const screenTitle = screen?.querySelector('h1');
+  const screenSubtitle = screen?.querySelector('p');
   const menuButtons = document.querySelectorAll('.btn');
   const startButton = document.getElementById('start-btn');
   const selectButton = document.getElementById('select-btn');
@@ -56,196 +55,95 @@ document.addEventListener('DOMContentLoaded', function() {
   // Update screen content
   function updateScreen(screenName) {
     const content = screens[screenName];
-    
     if (!content) return;
-    
+
     currentScreen = screenName;
-    
-    console.log('🖥️ Updating screen to:', screenName);
-    
-    // Update content
+
     if (screenTitle && screenSubtitle) {
       screenTitle.innerHTML = content.title;
       screenSubtitle.textContent = content.subtitle;
-      
-      // Update colors with smooth transition
+
       screenTitle.style.color = content.color;
       screenTitle.style.textShadow = `
         0 0 10px ${content.color},
-        0 0 20px ${content.color},
-        0 0 30px ${content.color}80
+        0 0 20px ${content.color}
       `;
-      
+
       screenSubtitle.style.color = content.subtitleColor;
-      screenSubtitle.style.textShadow = `
-        0 0 8px ${content.subtitleColor},
-        0 0 16px ${content.subtitleColor}80
-      `;
-      
-      // Add screen flash effect
+
       screen.style.opacity = '0.7';
-      setTimeout(() => {
-        screen.style.opacity = '1';
-      }, 100);
+      setTimeout(() => screen.style.opacity = '1', 100);
     }
   }
 
-  // Add click effect to buttons
+  // Click effect
   function addClickEffect(button) {
     button.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-      button.style.transform = '';
-    }, 100);
+    setTimeout(() => button.style.transform = '', 100);
   }
 
-  // Menu button click handlers
-  menuButtons.forEach((btn, index) => {
-    console.log(`🔘 Adding listener to button ${index}:`, btn.textContent);
-    
-    btn.addEventListener('click', function() {
+  // ===============================
+  // 🔥 MENU BUTTON HANDLER (FIXED)
+  // ===============================
+  menuButtons.forEach(btn => {
+    btn.addEventListener('click', function () {
       const screenName = this.getAttribute('data-screen');
-      console.log('🖱️ Button clicked! Screen name:', screenName);
-      
-      // Update screen display first
+
       updateScreen(screenName);
       addClickEffect(this);
-      
-      // Navigate to page after short delay
+
+      // ✅ PERBAIKAN 1:
+      // animasi tetap ada
+      document.body.style.transition = 'opacity 0.3s ease';
+      document.body.style.opacity = '0';
+
+      // ✅ PERBAIKAN 2:
+      // redirect DIPERCEPAT (≤ 200ms)
+      // supaya HP menganggap ini masih user gesture
       setTimeout(() => {
-        if (screenName === 'message') {
-          console.log('📨 Navigating to message.html...');
-          document.body.style.transition = 'opacity 0.5s ease';
-          document.body.style.opacity = '0';
-          
-          setTimeout(() => {
-            console.log('🚀 Redirecting now!');
+        switch (screenName) {
+          case 'message':
             window.location.href = 'message.html';
-          }, 500);
-        }
-        else if (screenName === 'gallery') {
-          console.log('📨 Navigating to music.html...');
-          document.body.style.transition = 'opacity 0.5s ease';
-          document.body.style.opacity = '0';
-          
-          setTimeout(() => {
-            console.log('🚀 Redirecting now!');
+            break;
+          case 'gallery':
+            window.location.href = 'gallery.html';
+            break;
+          case 'music':
             window.location.href = 'music.html';
-          }, 500);
-        }
-        else if (screenName === 'music') {
-          console.log('🎵 Music coming soon...');
-          console.log('📨 Navigating to music.html...');
-          document.body.style.transition = 'opacity 0.5s ease';
-          document.body.style.opacity = '0';
-          
-          setTimeout(() => {
-            console.log('🚀 Redirecting now!');
-            window.location.href = 'music.html';
-          }, 500);
-        }
-        else if (screenName === 'tetris') {
-          console.log('🎮 Tetris coming soon...');
-          console.log('📨 Navigating to tetris.html...');
-          document.body.style.transition = 'opacity 0.5s ease';
-          document.body.style.opacity = '0';
-          
-          setTimeout(() => {
-            console.log('🚀 Redirecting now!');
+            break;
+          case 'tetris':
             window.location.href = 'tetris.html';
-          }, 500);
+            break;
         }
-      }, 800);
+      }, 200); // ⬅️ INI KUNCI UTAMANYA
     });
   });
 
-  // START button - return to home
-  if (startButton) {
-    startButton.addEventListener('click', function() {
-      updateScreen('home');
-      addClickEffect(this);
-    });
-  }
+  // START button
+  startButton?.addEventListener('click', function () {
+    updateScreen('home');
+    addClickEffect(this);
+  });
 
-  // SELECT button - cycle through menus
-  if (selectButton) {
-    selectButton.addEventListener('click', function() {
-      const menuOrder = ['home', 'message', 'gallery', 'music', 'tetris'];
-      const currentIndex = menuOrder.indexOf(currentScreen);
-      const nextIndex = (currentIndex + 1) % menuOrder.length;
-      updateScreen(menuOrder[nextIndex]);
-      addClickEffect(this);
-    });
-  }
+  // SELECT button
+  selectButton?.addEventListener('click', function () {
+    const menuOrder = ['home', 'message', 'gallery', 'music', 'tetris'];
+    const next = (menuOrder.indexOf(currentScreen) + 1) % menuOrder.length;
+    updateScreen(menuOrder[next]);
+    addClickEffect(this);
+  });
 
-  // Add click effect to all buttons
+  // Global click effect
   allButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-      addClickEffect(this);
-    });
+    btn.addEventListener('click', () => addClickEffect(btn));
   });
 
-  // Add hover effect for menu buttons
-  menuButtons.forEach(btn => {
-    btn.addEventListener('mouseenter', function() {
-      this.style.filter = 'brightness(1.1)';
-    });
-    
-    btn.addEventListener('mouseleave', function() {
-      this.style.filter = '';
-    });
+  // Keyboard
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') startButton?.click();
+    if (e.key === ' ') selectButton?.click();
+    if (e.key === 'Escape' && currentScreen !== 'home') updateScreen('home');
   });
 
-  // D-pad navigation
-  const dpadButtons = document.querySelectorAll('.dpad-btn');
-  dpadButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-      console.log('D-pad button clicked:', this.className);
-    });
-  });
-
-  // A and B button handlers
-  const aButton = document.querySelector('.a-btn');
-  const bButton = document.querySelector('.b-btn');
-
-  if (aButton) {
-    aButton.addEventListener('click', function() {
-      console.log('A button pressed');
-    });
-  }
-
-  if (bButton) {
-    bButton.addEventListener('click', function() {
-      console.log('B button pressed - Go back');
-      if (currentScreen !== 'home') {
-        updateScreen('home');
-      }
-    });
-  }
-
-  // Keyboard controls
-  document.addEventListener('keydown', function(e) {
-    switch(e.key) {
-      case 'Enter':
-        if (startButton) startButton.click();
-        break;
-      case ' ':
-        if (selectButton) selectButton.click();
-        break;
-      case 'Escape':
-        if (currentScreen !== 'home') {
-          updateScreen('home');
-        }
-        break;
-      case 'ArrowUp':
-      case 'ArrowDown':
-      case 'ArrowLeft':
-      case 'ArrowRight':
-        console.log('Arrow key pressed:', e.key);
-        break;
-    }
-  });
-
-  // Initialize
   console.log('✨ HEYTML-BOY Console Ready!');
-  console.log('📍 Current screen:', currentScreen);
 });
