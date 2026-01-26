@@ -14,8 +14,6 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  overflow: hidden; 
-  touch-action: none;
 }
 
 .console {
@@ -574,4 +572,3 @@ body {
     height: 210px;
   }
 }
-
