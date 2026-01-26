@@ -6,9 +6,6 @@ window.testClick = function(screenName) {
   console.log('🎯 testClick called! Screen:', screenName);
   console.log('📍 Device:', /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop');
   
-  // Immediate feedback
-  alert('Navigating to: ' + screenName); // Debug alert
-  
   // Fade out
   document.body.style.transition = 'opacity 0.5s ease';
   document.body.style.opacity = '0';
