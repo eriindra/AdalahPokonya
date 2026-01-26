@@ -502,7 +502,7 @@ body {
 
 .console {
     max-width: 360px;
-    padding: 20px;
+    padding: 30px;
   }
 
   /* ⬇️ SAMAKAN DENGAN PC */
@@ -568,6 +568,7 @@ body {
   opacity: 1;
   box-shadow: 0 0 6px #4eff7a;
 }
+
 
 
 
