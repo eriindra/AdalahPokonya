@@ -16,7 +16,6 @@ body {
   padding: 20px;
   overflow: hidden; 
   touch-action: none;
-  min-height: 100svh;
 }
 
 .console {
@@ -599,4 +598,5 @@ body {
     font-size: 18px;
   }
 }
+
 
