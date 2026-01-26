@@ -145,6 +145,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         else if (screenName === 'tetris') {
           console.log('🎮 Tetris coming soon...');
+          console.log('📨 Navigating to tetris.html...');
+          document.body.style.transition = 'opacity 0.5s ease';
+          document.body.style.opacity = '0';
+          
+          setTimeout(() => {
+            console.log('🚀 Redirecting now!');
+            window.location.href = 'tetris.html';
+          }, 500);
         }
       }, 800);
     });
@@ -240,4 +248,5 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize
   console.log('✨ HEYTML-BOY Console Ready!');
   console.log('📍 Current screen:', currentScreen);
+
 });
