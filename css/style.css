@@ -98,7 +98,7 @@ body {
   text-align: center;
   position: relative;
   overflow: hidden;
-  height: 260px;
+  height: 250px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -411,6 +411,7 @@ body {
   }
 
 }
+
 
 
 
