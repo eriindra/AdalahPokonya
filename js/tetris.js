@@ -31,6 +31,7 @@ body {
     inset 0 -2px 4px rgba(0,0,0,0.1);
   position: relative;
 }
+
 /* Top Bar */
 .top-bar {
   display: flex;
@@ -90,11 +91,11 @@ body {
       transparent 2px
     );
   color: #4eff7a;
-  padding: 12px;
+  padding: 15px;
   border-radius: 8px;
   position: relative;
   overflow: hidden;
-  height: 420px;
+  height: 320px;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
 }
 
@@ -118,9 +119,9 @@ body {
 .game-header {
   display: flex;
   justify-content: space-between;
-  padding: 8px 10px;
-  border-bottom: 2px solid rgba(78, 255, 122, 0.3);
-  margin-bottom: 10px;
+  padding: 5px 8px;
+  border-bottom: 1px solid rgba(78, 255, 122, 0.3);
+  margin-bottom: 8px;
   position: relative;
   z-index: 1;
 }
@@ -138,7 +139,7 @@ body {
 }
 
 .score-value, .level-value {
-  font-size: 12px;
+  font-size: 11px;
   color: #4eff7a;
   text-shadow: 0 0 10px #4eff7a;
 }
@@ -146,9 +147,9 @@ body {
 /* Game Area */
 .game-area {
   position: relative;
-  width: 200px;
-  height: 320px;
-  margin: 0 auto 10px;
+  width: 160px;
+  height: 224px;
+  margin: 0 auto 8px;
   border: 2px solid rgba(78, 255, 122, 0.5);
   box-shadow: 
     0 0 20px rgba(78, 255, 122, 0.2),
@@ -186,25 +187,25 @@ body {
 }
 
 .tetris-logo {
-  font-size: 24px;
+  font-size: 20px;
   color: #5a9eff;
   text-shadow: 
     0 0 20px #5a9eff,
     0 0 40px rgba(90, 158, 255, 0.5);
-  margin-bottom: 30px;
-  letter-spacing: 4px;
+  margin-bottom: 20px;
+  letter-spacing: 3px;
 }
 
 .start-text {
-  font-size: 10px;
+  font-size: 8px;
   color: #4eff7a;
   text-shadow: 0 0 10px #4eff7a;
   line-height: 1.8;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .blink-cursor {
-  font-size: 16px;
+  font-size: 14px;
   color: #ffd700;
   text-shadow: 0 0 15px #ffd700;
   animation: blink 1s infinite;
@@ -249,12 +250,13 @@ body {
   background: linear-gradient(145deg, #1a2332, #0a1828);
   border: 3px solid #ff6b6b;
   border-radius: 12px;
-  padding: 20px;
+  padding: 15px;
   text-align: center;
   box-shadow: 
     0 0 30px rgba(255, 107, 107, 0.5),
     inset 0 2px 10px rgba(0, 0, 0, 0.5);
   animation: popupBounce 0.5s ease;
+  max-width: 140px;
 }
 
 @keyframes popupBounce {
@@ -264,13 +266,13 @@ body {
 }
 
 .game-over-title {
-  font-size: 16px;
+  font-size: 13px;
   color: #ff6b6b;
   text-shadow: 
     0 0 20px #ff6b6b,
     0 0 40px rgba(255, 107, 107, 0.5);
-  margin-bottom: 20px;
-  letter-spacing: 2px;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
   animation: shake 0.5s ease;
 }
 
@@ -281,32 +283,32 @@ body {
 }
 
 .final-score, .final-level {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .final-score .label, .final-level .label {
   display: block;
-  font-size: 7px;
+  font-size: 6px;
   color: #ffd700;
   text-shadow: 0 0 5px #ffd700;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .final-score .value, .final-level .value {
-  font-size: 20px;
+  font-size: 16px;
   color: #4eff7a;
   text-shadow: 0 0 15px #4eff7a;
 }
 
 .restart-btn {
-  margin-top: 20px;
-  padding: 12px 24px;
+  margin-top: 12px;
+  padding: 10px 18px;
   background: linear-gradient(145deg, #3edd6a, #22c55e);
   border: none;
   border-radius: 8px;
   color: white;
   font-family: 'Press Start 2P', cursive;
-  font-size: 10px;
+  font-size: 8px;
   cursor: pointer;
   box-shadow: 
     0 4px 0 #1a7a3a,
@@ -314,7 +316,7 @@ body {
   transition: all 0.2s;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   justify-content: center;
   width: 100%;
 }
@@ -334,7 +336,7 @@ body {
 }
 
 .restart-icon {
-  font-size: 14px;
+  font-size: 12px;
   animation: rotate 2s linear infinite;
 }
 
@@ -347,15 +349,15 @@ body {
 .next-piece-container {
   position: relative;
   z-index: 1;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .next-label {
-  font-size: 8px;
+  font-size: 7px;
   color: #ffd700;
   text-shadow: 0 0 5px #ffd700;
   text-align: center;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 #next-canvas {
@@ -565,17 +567,11 @@ body {
   }
 
   .screen {
-    height: 400px;
+    height: 300px;
   }
 
   .game-area {
-    width: 180px;
-    height: 288px;
-  }
-
-  #tetris-canvas {
-    width: 180px;
-    height: 288px;
+    width: 150px;
+    height: 210px;
   }
 }
-
