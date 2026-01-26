@@ -1,6 +1,25 @@
 // Debug: Check if script loads
 console.log('🎮 Script loaded!');
 
+// GLOBAL testClick function - MUST be defined before HTML loads
+window.testClick = function(screenName) {
+  console.log('🎯 testClick called! Screen:', screenName);
+  console.log('📍 Device:', /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop');
+  
+  // Immediate feedback
+  alert('Navigating to: ' + screenName); // Debug alert
+  
+  // Fade out
+  document.body.style.transition = 'opacity 0.5s ease';
+  document.body.style.opacity = '0';
+  
+  // Navigate after fade
+  setTimeout(function() {
+    console.log('🚀 Redirecting now to:', screenName + '.html');
+    window.location.href = screenName + '.html';
+  }, 500);
+};
+
 // Current screen state
 let currentScreen = 'home';
 
@@ -38,21 +57,6 @@ const screens = {
   }
 };
 
-// TEST CLICK FUNCTION - Called from HTML onclick
-window.testClick = function(screenName) {
-  console.log('🎯 testClick called with:', screenName);
-  
-  // Fade out
-  document.body.style.transition = 'opacity 0.5s ease';
-  document.body.style.opacity = '0';
-  
-  // Navigate after fade
-  setTimeout(() => {
-    console.log('🚀 Redirecting to:', screenName + '.html');
-    window.location.href = screenName + '.html';
-  }, 500);
-};
-
 // Wait for DOM to load
 document.addEventListener('DOMContentLoaded', function() {
   console.log('✅ DOM loaded');
@@ -67,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const allButtons = document.querySelectorAll('.btn, .dpad-btn, .ab-btn, .control-btn');
 
   console.log('📱 Menu buttons found:', menuButtons.length);
+  console.log('🔍 Device type:', /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'MOBILE' : 'DESKTOP');
 
   // Update screen content
   function updateScreen(screenName) {
@@ -113,24 +118,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
   }
 
-  // Add touch support to all menu buttons
+  // Add MULTIPLE event listeners for maximum compatibility
   menuButtons.forEach((btn, index) => {
-    console.log(`🔘 Button ${index}:`, btn.textContent.trim(), '→', btn.getAttribute('data-screen'));
+    const screenName = btn.getAttribute('data-screen');
+    console.log(`🔘 Setup button ${index}: ${btn.textContent.trim()} → ${screenName}`);
     
-    // Add touch event listener for mobile
-    btn.addEventListener('touchend', function(e) {
-      e.preventDefault();
-      const screenName = this.getAttribute('data-screen');
-      console.log('👆 Touch detected on:', screenName);
-      
-      // Call the testClick function
-      window.testClick(screenName);
-    });
-    
-    // Visual feedback on touch
-    btn.addEventListener('touchstart', function(e) {
+    // Method 1: Click event (desktop + some mobile)
+    btn.addEventListener('click', function(e) {
+      console.log('🖱️ CLICK event fired on:', screenName);
+      // onclick will handle navigation, just add visual feedback
       addClickEffect(this);
-    });
+    }, { passive: false });
+    
+    // Method 2: Touchstart (immediate feedback)
+    btn.addEventListener('touchstart', function(e) {
+      console.log('👆 TOUCHSTART on:', screenName);
+      addClickEffect(this);
+    }, { passive: true });
+    
+    // Method 3: Touchend (backup navigation)
+    btn.addEventListener('touchend', function(e) {
+      console.log('👆 TOUCHEND on:', screenName);
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Call testClick as backup if onclick doesn't fire
+      setTimeout(function() {
+        console.log('⏰ Backup navigation triggered');
+        window.testClick(screenName);
+      }, 100);
+    }, { passive: false });
+    
+    // Method 4: Pointer events (modern browsers)
+    if ('PointerEvent' in window) {
+      btn.addEventListener('pointerdown', function(e) {
+        console.log('🖊️ POINTER event on:', screenName);
+        addClickEffect(this);
+      }, { passive: true });
+    }
   });
 
   // START button - return to home
@@ -166,13 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
       addClickEffect(this);
     });
   }
-
-  // Add touch feedback to all buttons
-  allButtons.forEach(btn => {
-    btn.addEventListener('touchstart', function() {
-      addClickEffect(this);
-    });
-  });
 
   // Add hover effect for menu buttons (desktop only)
   menuButtons.forEach(btn => {
@@ -256,12 +274,18 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize
   console.log('✨ ERIINDRAA Console Ready!');
   console.log('📍 Current screen:', currentScreen);
-  console.log('🎮 testClick function available:', typeof window.testClick);
+  console.log('🎮 testClick function:', typeof window.testClick);
   
-  // Test all buttons have correct data-screen
+  // Test button accessibility
   menuButtons.forEach((btn, i) => {
-    const screenName = btn.getAttribute('data-screen');
-    console.log(`✓ Button ${i}: ${btn.textContent.trim()} → ${screenName}`);
+    const rect = btn.getBoundingClientRect();
+    console.log(`Button ${i} bounds:`, {
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+      visible: rect.width > 0 && rect.height > 0
+    });
   });
 
 });
