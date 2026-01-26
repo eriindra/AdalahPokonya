@@ -38,6 +38,21 @@ const screens = {
   }
 };
 
+// TEST CLICK FUNCTION - Called from HTML onclick
+window.testClick = function(screenName) {
+  console.log('🎯 testClick called with:', screenName);
+  
+  // Fade out
+  document.body.style.transition = 'opacity 0.5s ease';
+  document.body.style.opacity = '0';
+  
+  // Navigate after fade
+  setTimeout(() => {
+    console.log('🚀 Redirecting to:', screenName + '.html');
+    window.location.href = screenName + '.html';
+  }, 500);
+};
+
 // Wait for DOM to load
 document.addEventListener('DOMContentLoaded', function() {
   console.log('✅ DOM loaded');
@@ -98,55 +113,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
   }
 
-  // Navigate to page
-  function navigateToPage(screenName) {
-    console.log('🚀 Navigating to:', screenName);
-    
-    document.body.style.transition = 'opacity 0.5s ease';
-    document.body.style.opacity = '0';
-    
-    setTimeout(() => {
-      console.log('➡️ Redirecting to:', screenName + '.html');
-      window.location.href = screenName + '.html';
-    }, 500);
-  }
-
-  // Handle button click (works for both mouse and touch)
-  function handleButtonClick(btn) {
-    const screenName = btn.getAttribute('data-screen');
-    console.log('🖱️ Button clicked! Screen name:', screenName);
-    
-    if (!screenName) {
-      console.error('❌ No data-screen attribute found!');
-      return;
-    }
-    
-    // Update screen display first
-    updateScreen(screenName);
-    addClickEffect(btn);
-    
-    // Navigate to page after short delay
-    setTimeout(() => {
-      navigateToPage(screenName);
-    }, 800);
-  }
-
-  // Menu button click and touch handlers
+  // Add touch support to all menu buttons
   menuButtons.forEach((btn, index) => {
-    console.log(`🔘 Adding listeners to button ${index}:`, btn.textContent, 'data-screen:', btn.getAttribute('data-screen'));
+    console.log(`🔘 Button ${index}:`, btn.textContent.trim(), '→', btn.getAttribute('data-screen'));
     
-    // Click event (mouse/desktop)
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      console.log('🖱️ CLICK event triggered');
-      handleButtonClick(this);
-    });
-    
-    // Touch event (mobile/tablet)
+    // Add touch event listener for mobile
     btn.addEventListener('touchend', function(e) {
       e.preventDefault();
-      console.log('👆 TOUCH event triggered');
-      handleButtonClick(this);
+      const screenName = this.getAttribute('data-screen');
+      console.log('👆 Touch detected on:', screenName);
+      
+      // Call the testClick function
+      window.testClick(screenName);
+    });
+    
+    // Visual feedback on touch
+    btn.addEventListener('touchstart', function(e) {
+      addClickEffect(this);
     });
   });
 
@@ -184,13 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Add click effect to all buttons
+  // Add touch feedback to all buttons
   allButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-      addClickEffect(this);
-    });
-    
-    btn.addEventListener('touchend', function(e) {
+    btn.addEventListener('touchstart', function() {
       addClickEffect(this);
     });
   });
@@ -277,10 +256,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize
   console.log('✨ ERIINDRAA Console Ready!');
   console.log('📍 Current screen:', currentScreen);
+  console.log('🎮 testClick function available:', typeof window.testClick);
   
-  // Log all button data-screen attributes
+  // Test all buttons have correct data-screen
   menuButtons.forEach((btn, i) => {
-    console.log(`Button ${i}:`, btn.textContent.trim(), '→', btn.getAttribute('data-screen'));
+    const screenName = btn.getAttribute('data-screen');
+    console.log(`✓ Button ${i}: ${btn.textContent.trim()} → ${screenName}`);
   });
 
 });
