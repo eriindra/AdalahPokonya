@@ -503,13 +503,9 @@ body {
     padding: 10;
   }
 
-  .console {
-    max-width: calc(100vw - 20px);
-    width: calc(100% - 20px);
-    max-height: calc(100vh - 20px);
-    max-height: calc(100dvh - 20px);
-    padding: 15px;
-    border-radius: 20px 20px 30px 30px;
+   .console {
+    max-width: 360px;
+    padding: 20px;
   }
 
   .screen {
@@ -581,3 +577,4 @@ body {
   opacity: 1;
   box-shadow: 0 0 6px #4eff7a;
 }
+
