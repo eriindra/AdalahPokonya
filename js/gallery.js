@@ -1,15 +1,15 @@
 // Photo gallery data
 const photos = [
   {
-    url: 'gambar/1.jpeg',
+    url: 'gambar/1.jpg',
     caption: 'Birthday Memories 🎂'
   },
   {
-    url: 'gambar/1.jpeg',
+    url: 'gambar/1.jpg',
     caption: 'Best Moments ✨'
   },
   {
-    url: 'gambar/1.jpeg',
+    url: 'gambar/1.jpg',
     caption: 'Sweet Times 🎈'
   }
 ];
@@ -274,4 +274,5 @@ console.log('Total photos:', photos.length);
 console.log('Controls: ◀/▶ for prev/next, Dots for direct access');
 console.log('A button: View (zoom effect)');
 console.log('Swipe: Left/Right on polaroid');
+
 console.log('Back: B button, START, ESC, or Backspace');
