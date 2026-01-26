@@ -502,12 +502,7 @@ body {
 
 .console {
     max-width: 360px;
-    padding: 30px;
-  }
-
-  /* ⬇️ SAMAKAN DENGAN PC */
-  .screen {
-    height: 380px;
+    padding: 20px;
   }
 
   .polaroid-container {
@@ -568,6 +563,7 @@ body {
   opacity: 1;
   box-shadow: 0 0 6px #4eff7a;
 }
+
 
 
 
