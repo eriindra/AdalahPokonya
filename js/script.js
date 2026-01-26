@@ -98,69 +98,67 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
   }
 
-  // Menu button click handlers
-  menuButtons.forEach((btn, index) => {
-    console.log(`🔘 Adding listener to button ${index}:`, btn.textContent);
+  // Navigate to page
+  function navigateToPage(screenName) {
+    console.log('🚀 Navigating to:', screenName);
     
-    btn.addEventListener('click', function() {
-      const screenName = this.getAttribute('data-screen');
-      console.log('🖱️ Button clicked! Screen name:', screenName);
-      
-      // Update screen display first
-      updateScreen(screenName);
-      addClickEffect(this);
-      
-      // Navigate to page after short delay
-      setTimeout(() => {
-        if (screenName === 'message') {
-          console.log('📨 Navigating to message.html...');
-          document.body.style.transition = 'opacity 0.5s ease';
-          document.body.style.opacity = '0';
-          
-          setTimeout(() => {
-            console.log('🚀 Redirecting now!');
-            window.location.href = 'message.html';
-          }, 500);
-        }
-        else if (screenName === 'gallery') {
-          console.log('📨 Navigating to music.html...');
-          document.body.style.transition = 'opacity 0.5s ease';
-          document.body.style.opacity = '0';
-          
-          setTimeout(() => {
-            console.log('🚀 Redirecting now!');
-            window.location.href = 'music.html';
-          }, 500);
-        }
-        else if (screenName === 'music') {
-          console.log('🎵 Music coming soon...');
-          console.log('📨 Navigating to music.html...');
-          document.body.style.transition = 'opacity 0.5s ease';
-          document.body.style.opacity = '0';
-          
-          setTimeout(() => {
-            console.log('🚀 Redirecting now!');
-            window.location.href = 'music.html';
-          }, 500);
-        }
-        else if (screenName === 'tetris') {
-          console.log('🎮 Tetris coming soon...');
-          console.log('📨 Navigating to tetris.html...');
-          document.body.style.transition = 'opacity 0.5s ease';
-          document.body.style.opacity = '0';
-          
-          setTimeout(() => {
-            console.log('🚀 Redirecting now!');
-            window.location.href = 'tetris.html';
-          }, 500);
-        }
-      }, 800);
+    document.body.style.transition = 'opacity 0.5s ease';
+    document.body.style.opacity = '0';
+    
+    setTimeout(() => {
+      console.log('➡️ Redirecting to:', screenName + '.html');
+      window.location.href = screenName + '.html';
+    }, 500);
+  }
+
+  // Handle button click (works for both mouse and touch)
+  function handleButtonClick(btn) {
+    const screenName = btn.getAttribute('data-screen');
+    console.log('🖱️ Button clicked! Screen name:', screenName);
+    
+    if (!screenName) {
+      console.error('❌ No data-screen attribute found!');
+      return;
+    }
+    
+    // Update screen display first
+    updateScreen(screenName);
+    addClickEffect(btn);
+    
+    // Navigate to page after short delay
+    setTimeout(() => {
+      navigateToPage(screenName);
+    }, 800);
+  }
+
+  // Menu button click and touch handlers
+  menuButtons.forEach((btn, index) => {
+    console.log(`🔘 Adding listeners to button ${index}:`, btn.textContent, 'data-screen:', btn.getAttribute('data-screen'));
+    
+    // Click event (mouse/desktop)
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log('🖱️ CLICK event triggered');
+      handleButtonClick(this);
+    });
+    
+    // Touch event (mobile/tablet)
+    btn.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      console.log('👆 TOUCH event triggered');
+      handleButtonClick(this);
     });
   });
 
   // START button - return to home
   if (startButton) {
     startButton.addEventListener('click', function() {
+      updateScreen('home');
+      addClickEffect(this);
+    });
+    
+    startButton.addEventListener('touchend', function(e) {
+      e.preventDefault();
       updateScreen('home');
       addClickEffect(this);
     });
@@ -175,6 +173,15 @@ document.addEventListener('DOMContentLoaded', function() {
       updateScreen(menuOrder[nextIndex]);
       addClickEffect(this);
     });
+    
+    selectButton.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      const menuOrder = ['home', 'message', 'gallery', 'music', 'tetris'];
+      const currentIndex = menuOrder.indexOf(currentScreen);
+      const nextIndex = (currentIndex + 1) % menuOrder.length;
+      updateScreen(menuOrder[nextIndex]);
+      addClickEffect(this);
+    });
   }
 
   // Add click effect to all buttons
@@ -182,9 +189,13 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function() {
       addClickEffect(this);
     });
+    
+    btn.addEventListener('touchend', function(e) {
+      addClickEffect(this);
+    });
   });
 
-  // Add hover effect for menu buttons
+  // Add hover effect for menu buttons (desktop only)
   menuButtons.forEach(btn => {
     btn.addEventListener('mouseenter', function() {
       this.style.filter = 'brightness(1.1)';
@@ -201,6 +212,11 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function() {
       console.log('D-pad button clicked:', this.className);
     });
+    
+    btn.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      console.log('D-pad button touched:', this.className);
+    });
   });
 
   // A and B button handlers
@@ -211,11 +227,24 @@ document.addEventListener('DOMContentLoaded', function() {
     aButton.addEventListener('click', function() {
       console.log('A button pressed');
     });
+    
+    aButton.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      console.log('A button touched');
+    });
   }
 
   if (bButton) {
     bButton.addEventListener('click', function() {
       console.log('B button pressed - Go back');
+      if (currentScreen !== 'home') {
+        updateScreen('home');
+      }
+    });
+    
+    bButton.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      console.log('B button touched - Go back');
       if (currentScreen !== 'home') {
         updateScreen('home');
       }
@@ -246,7 +275,12 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Initialize
-  console.log('✨ HEYTML-BOY Console Ready!');
+  console.log('✨ ERIINDRAA Console Ready!');
   console.log('📍 Current screen:', currentScreen);
+  
+  // Log all button data-screen attributes
+  menuButtons.forEach((btn, i) => {
+    console.log(`Button ${i}:`, btn.textContent.trim(), '→', btn.getAttribute('data-screen'));
+  });
 
 });
