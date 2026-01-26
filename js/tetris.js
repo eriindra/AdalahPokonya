@@ -31,7 +31,6 @@ body {
     inset 0 -2px 4px rgba(0,0,0,0.1);
   position: relative;
 }
-
 /* Top Bar */
 .top-bar {
   display: flex;
@@ -579,3 +578,4 @@ body {
     height: 288px;
   }
 }
+
