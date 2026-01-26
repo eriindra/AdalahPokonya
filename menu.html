@@ -2,9 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>ERIINDRAA Console</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Critical mobile fixes */
+    * {
+      -webkit-tap-highlight-color: rgba(78, 255, 122, 0.3);
+    }
+    
+    .btn {
+      touch-action: manipulation !important;
+      pointer-events: auto !important;
+      -webkit-user-select: none;
+      user-select: none;
+      cursor: pointer;
+      position: relative;
+      z-index: 100;
+    }
+    
+    .menu-buttons {
+      position: relative;
+      z-index: 50;
+      pointer-events: auto !important;
+    }
+    
+    .menu-buttons .btn {
+      display: block;
+      width: 100%;
+      min-height: 50px;
+    }
+    
+    /* Visual feedback on touch */
+    .btn:active {
+      transform: scale(0.95) !important;
+      opacity: 0.8;
+    }
+    
+    /* Remove any blocking overlays */
+    .console::before,
+    .console::after,
+    .screen::before,
+    .screen::after,
+    .screen-container::before,
+    .screen-container::after {
+      pointer-events: none !important;
+    }
+  </style>
 </head>
 <body>
   <div class="console">
@@ -15,7 +61,7 @@
       </div>
       <div class="brand">ERIINDRAA</div>
     </div>
-
+    
     <div class="screen-container">
       <div class="screen">
         <h1>Happy<br>Birthday!</h1>
@@ -27,14 +73,14 @@
         </div>
       </div>
     </div>
-
+    
     <div class="menu-buttons">
-      <button class="btn blue" data-screen="message" onclick="testClick('message')">MESSAGE</button>
-      <button class="btn red" data-screen="gallery" onclick="testClick('gallery')">GALLERY</button>
-      <button class="btn purple" data-screen="music" onclick="testClick('music')">MUSIC</button>
-      <button class="btn green" data-screen="tetris" onclick="testClick('tetris')">TETRIS</button>
+      <button class="btn blue" data-screen="message">MESSAGE</button>
+      <button class="btn red" data-screen="gallery">GALLERY</button>
+      <button class="btn purple" data-screen="music">MUSIC</button>
+      <button class="btn green" data-screen="tetris">TETRIS</button>
     </div>
-
+    
     <div class="controls">
       <div class="dpad-container">
         <div class="dpad">
@@ -45,18 +91,18 @@
           <button class="dpad-btn dpad-down"><span class="dpad-arrow">▼</span></button>
         </div>
       </div>
-
+      
       <div class="ab-buttons">
         <button class="ab-btn b-btn">B</button>
         <button class="ab-btn a-btn">A</button>
       </div>
     </div>
-
+    
     <div class="bottom-controls">
       <button class="control-btn" id="select-btn">SELECT</button>
       <button class="control-btn" id="start-btn">START</button>
     </div>
-
+    
     <div class="speaker">
       <div class="speaker-hole"></div>
       <div class="speaker-hole"></div>
@@ -66,9 +112,7 @@
       <div class="speaker-hole"></div>
     </div>
   </div>
-
   
-  <!-- Load main script AFTER test -->
   <script src="js/script.js"></script>
 </body>
 </html>
