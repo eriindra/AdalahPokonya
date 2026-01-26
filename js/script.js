@@ -1,22 +1,6 @@
 // Debug: Check if script loads
 console.log('🎮 Script loaded!');
 
-// GLOBAL testClick function - MUST be defined before HTML loads
-window.testClick = function(screenName) {
-  console.log('🎯 testClick called! Screen:', screenName);
-  console.log('📍 Device:', /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop');
-  
-  // Fade out
-  document.body.style.transition = 'opacity 0.5s ease';
-  document.body.style.opacity = '0';
-  
-  // Navigate after fade
-  setTimeout(function() {
-    console.log('🚀 Redirecting now to:', screenName + '.html');
-    window.location.href = screenName + '.html';
-  }, 500);
-};
-
 // Current screen state
 let currentScreen = 'home';
 
@@ -68,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const allButtons = document.querySelectorAll('.btn, .dpad-btn, .ab-btn, .control-btn');
 
   console.log('📱 Menu buttons found:', menuButtons.length);
-  console.log('🔍 Device type:', /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'MOBILE' : 'DESKTOP');
 
   // Update screen content
   function updateScreen(screenName) {
@@ -115,55 +98,69 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
   }
 
-  // Add MULTIPLE event listeners for maximum compatibility
+  // Menu button click handlers
   menuButtons.forEach((btn, index) => {
-    const screenName = btn.getAttribute('data-screen');
-    console.log(`🔘 Setup button ${index}: ${btn.textContent.trim()} → ${screenName}`);
+    console.log(`🔘 Adding listener to button ${index}:`, btn.textContent);
     
-    // Method 1: Click event (desktop + some mobile)
-    btn.addEventListener('click', function(e) {
-      console.log('🖱️ CLICK event fired on:', screenName);
-      // onclick will handle navigation, just add visual feedback
-      addClickEffect(this);
-    }, { passive: false });
-    
-    // Method 2: Touchstart (immediate feedback)
-    btn.addEventListener('touchstart', function(e) {
-      console.log('👆 TOUCHSTART on:', screenName);
-      addClickEffect(this);
-    }, { passive: true });
-    
-    // Method 3: Touchend (backup navigation)
-    btn.addEventListener('touchend', function(e) {
-      console.log('👆 TOUCHEND on:', screenName);
-      e.preventDefault();
-      e.stopPropagation();
+    btn.addEventListener('click', function() {
+      const screenName = this.getAttribute('data-screen');
+      console.log('🖱️ Button clicked! Screen name:', screenName);
       
-      // Call testClick as backup if onclick doesn't fire
-      setTimeout(function() {
-        console.log('⏰ Backup navigation triggered');
-        window.testClick(screenName);
-      }, 100);
-    }, { passive: false });
-    
-    // Method 4: Pointer events (modern browsers)
-    if ('PointerEvent' in window) {
-      btn.addEventListener('pointerdown', function(e) {
-        console.log('🖊️ POINTER event on:', screenName);
-        addClickEffect(this);
-      }, { passive: true });
-    }
+      // Update screen display first
+      updateScreen(screenName);
+      addClickEffect(this);
+      
+      // Navigate to page after short delay
+      setTimeout(() => {
+        if (screenName === 'message') {
+          console.log('📨 Navigating to message.html...');
+          document.body.style.transition = 'opacity 0.5s ease';
+          document.body.style.opacity = '0';
+          
+          setTimeout(() => {
+            console.log('🚀 Redirecting now!');
+            window.location.href = 'message.html';
+          }, 500);
+        }
+        else if (screenName === 'gallery') {
+          console.log('📨 Navigating to music.html...');
+          document.body.style.transition = 'opacity 0.5s ease';
+          document.body.style.opacity = '0';
+          
+          setTimeout(() => {
+            console.log('🚀 Redirecting now!');
+            window.location.href = 'music.html';
+          }, 500);
+        }
+        else if (screenName === 'music') {
+          console.log('🎵 Music coming soon...');
+          console.log('📨 Navigating to music.html...');
+          document.body.style.transition = 'opacity 0.5s ease';
+          document.body.style.opacity = '0';
+          
+          setTimeout(() => {
+            console.log('🚀 Redirecting now!');
+            window.location.href = 'music.html';
+          }, 500);
+        }
+        else if (screenName === 'tetris') {
+          console.log('🎮 Tetris coming soon...');
+          console.log('📨 Navigating to tetris.html...');
+          document.body.style.transition = 'opacity 0.5s ease';
+          document.body.style.opacity = '0';
+          
+          setTimeout(() => {
+            console.log('🚀 Redirecting now!');
+            window.location.href = 'tetris.html';
+          }, 500);
+        }
+      }, 800);
+    });
   });
 
   // START button - return to home
   if (startButton) {
     startButton.addEventListener('click', function() {
-      updateScreen('home');
-      addClickEffect(this);
-    });
-    
-    startButton.addEventListener('touchend', function(e) {
-      e.preventDefault();
       updateScreen('home');
       addClickEffect(this);
     });
@@ -178,18 +175,16 @@ document.addEventListener('DOMContentLoaded', function() {
       updateScreen(menuOrder[nextIndex]);
       addClickEffect(this);
     });
-    
-    selectButton.addEventListener('touchend', function(e) {
-      e.preventDefault();
-      const menuOrder = ['home', 'message', 'gallery', 'music', 'tetris'];
-      const currentIndex = menuOrder.indexOf(currentScreen);
-      const nextIndex = (currentIndex + 1) % menuOrder.length;
-      updateScreen(menuOrder[nextIndex]);
-      addClickEffect(this);
-    });
   }
 
-  // Add hover effect for menu buttons (desktop only)
+  // Add click effect to all buttons
+  allButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      addClickEffect(this);
+    });
+  });
+
+  // Add hover effect for menu buttons
   menuButtons.forEach(btn => {
     btn.addEventListener('mouseenter', function() {
       this.style.filter = 'brightness(1.1)';
@@ -206,11 +201,6 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function() {
       console.log('D-pad button clicked:', this.className);
     });
-    
-    btn.addEventListener('touchend', function(e) {
-      e.preventDefault();
-      console.log('D-pad button touched:', this.className);
-    });
   });
 
   // A and B button handlers
@@ -221,24 +211,11 @@ document.addEventListener('DOMContentLoaded', function() {
     aButton.addEventListener('click', function() {
       console.log('A button pressed');
     });
-    
-    aButton.addEventListener('touchend', function(e) {
-      e.preventDefault();
-      console.log('A button touched');
-    });
   }
 
   if (bButton) {
     bButton.addEventListener('click', function() {
       console.log('B button pressed - Go back');
-      if (currentScreen !== 'home') {
-        updateScreen('home');
-      }
-    });
-    
-    bButton.addEventListener('touchend', function(e) {
-      e.preventDefault();
-      console.log('B button touched - Go back');
       if (currentScreen !== 'home') {
         updateScreen('home');
       }
@@ -269,20 +246,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Initialize
-  console.log('✨ ERIINDRAA Console Ready!');
+  console.log('✨ HEYTML-BOY Console Ready!');
   console.log('📍 Current screen:', currentScreen);
-  console.log('🎮 testClick function:', typeof window.testClick);
-  
-  // Test button accessibility
-  menuButtons.forEach((btn, i) => {
-    const rect = btn.getBoundingClientRect();
-    console.log(`Button ${i} bounds:`, {
-      top: rect.top,
-      left: rect.left,
-      width: rect.width,
-      height: rect.height,
-      visible: rect.width > 0 && rect.height > 0
-    });
-  });
-
 });
