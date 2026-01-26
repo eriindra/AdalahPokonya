@@ -504,12 +504,9 @@ body {
     padding: 10px;
   }
 
-  .console {
-    height: 95dvh;        /* ⬅️ INI KUNCINYA */
-    max-height: 95dvh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.console {
+    max-width: 360px;
+    padding: 20px;
   }
 
   /* ⬇️ SAMAKAN DENGAN PC */
@@ -575,4 +572,5 @@ body {
   opacity: 1;
   box-shadow: 0 0 6px #4eff7a;
 }
+
 
