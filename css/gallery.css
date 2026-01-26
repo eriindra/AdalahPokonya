@@ -501,7 +501,7 @@ body {
 @media (max-width: 480px) {
 
 .console {
-    max-width: 360px;
+    max-width: 340px;
     padding: 20px;
   }
 
@@ -563,6 +563,7 @@ body {
   opacity: 1;
   box-shadow: 0 0 6px #4eff7a;
 }
+
 
 
 
